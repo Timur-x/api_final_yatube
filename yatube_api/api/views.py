@@ -21,6 +21,8 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
 
     permission_classes = (IsAuthorOrReadOnly,)
+    # Подключаем класс LimitOffsetPagination
+    # для получение списка публикаций
     pagination_class = LimitOffsetPagination
 
     def perform_create(self, serializer):
