@@ -36,6 +36,7 @@ class Comment(models.Model):
 
 
 class Follow(models.Model):
+    # создаем 2 поля user (кто подписан),following (на кого подписан)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='follower'
     )
