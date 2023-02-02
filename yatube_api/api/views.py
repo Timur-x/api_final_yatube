@@ -17,7 +17,7 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    permission_classes = (IsAuthorOrReadOnly,)
+    permission_classes = (IsAuthenticated, IsAuthorOrReadOnly,)
     # Подключаем класс LimitOffsetPagination
     # для получение списка публикаций
     pagination_class = LimitOffsetPagination

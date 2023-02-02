@@ -13,15 +13,15 @@ class PostSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        fields = '__all__'
         model = Post
+        fields = '__all__'
 
 
 class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
-        fields = '__all__'
         model = Group
+        fields = '__all__'
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -30,8 +30,8 @@ class CommentSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
-        fields = '__all__'
         model = Comment
+        fields = '__all__'
 
 
 class FollowSerializer(serializers.ModelSerializer):
