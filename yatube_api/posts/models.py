@@ -5,21 +5,43 @@ User = get_user_model()
 
 
 class Group(models.Model):
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
+    '''Создания групп постов.'''
+    title = models.CharField(
+        max_length=200,
+        help_text='Введите название группы'
+    )
+    slug = models.SlugField(
+        unique=True,
+        help_text='Укажите порядковый № группы'
+    )
+    description = models.TextField(
+        help_text='Добавьте текст описания группы'
+    )
 
     def __str__(self):
         return self.title
 
 
 class Post(models.Model):
-    text = models.TextField()
-    pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
+    '''Создания постов пользователей.'''
+    text = models.TextField(help_text='Введите текст статьи')
+    pub_date = models.DateTimeField(
+        'Дата публикации',
+        auto_now_add=True,
+        help_text='Укажите дату публикации'
+    )
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='posts')
+        User,
+        on_delete=models.CASCADE,
+        related_name='posts',
+        help_text='Укажите автора статьи'
+    )
     image = models.ImageField(
-        upload_to='posts/', null=True, blank=True)
+        upload_to='posts/',
+        null=True,
+        blank=True,
+        help_text='Добавьте картинку статьи'
+    )
     group = models.ForeignKey(
         Group, on_delete=models.CASCADE,
         related_name="posts", blank=True, null=True
@@ -30,6 +52,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    '''Создания комментариев пользователей к постам.'''
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='comments')
     post = models.ForeignKey(
@@ -40,10 +63,27 @@ class Comment(models.Model):
 
 
 class Follow(models.Model):
-    # создаем 2 поля user (кто подписан),following (на кого подписан)
+    '''Создания подписок пользователей.'''
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='follower'
+        User,
+        on_delete=models.CASCADE,
+        related_name='follower',
+        help_text='Подписчик'
     )
     following = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='following'
+        User,
+        on_delete=models.CASCADE,
+        related_name='following',
+        help_text='Автор поста'
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['following', 'user'],
+                name='unique_following_user',
+            )
+        ]
+
+    def __str__(self):
+        return self.user

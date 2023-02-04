@@ -1,25 +1,25 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import filters, permissions, viewsets
 from rest_framework.pagination import LimitOffsetPagination
-from posts.models import Group, Post, Follow
+
 from .permissions import IsAuthorOrReadOnly
 from .serializers import (CommentSerializer,
                           GroupSerializer, PostSerializer, FollowSerializer)
+from posts.models import Group, Post
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
+    '''Обработка групп.'''
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class PostViewSet(viewsets.ModelViewSet):
+    '''Обработка постов.'''
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-
     permission_classes = (IsAuthorOrReadOnly,)
-    # Подключаем класс LimitOffsetPagination
-    # для получение списка публикаций
     pagination_class = LimitOffsetPagination
 
     def perform_create(self, serializer):
@@ -27,6 +27,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
+    '''Обработка комментариев.'''
     serializer_class = CommentSerializer
     permission_classes = (IsAuthorOrReadOnly,)
 
@@ -40,7 +41,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class FollowViewSet(viewsets.ModelViewSet):
-    queryset = Follow.objects.all()
+    '''Обработка подписок.'''
     serializer_class = FollowSerializer
     filter_backends = (filters.SearchFilter, )
     search_fields = ('following__username',)
