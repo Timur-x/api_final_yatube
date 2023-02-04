@@ -48,9 +48,16 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+Перейти в директорию api_final_yatube/yatube_api:
+
+```
+cd yatube_api
+```
+
 Выполнить миграции:
 
 ```
+python manage.py makemigrations
 python manage.py migrate
 ```
 
